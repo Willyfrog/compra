@@ -14,6 +14,10 @@ MONGODB = "mongodb://localhost"
 def index():
     return "Bienvenido a mi pequeña aplicacion, disfruta jugando con ella!"
 
+@route('/register')
+def register():
+    return "registro de usuario"
+
 @route('/login')
 def login():
     return "login"
@@ -24,7 +28,7 @@ def logout():
 
 @route('/static/<file:path>')
 def static(file):
-    #TODO: prevent accessing .. or any other thing
+    #TODO: prevent accessing .. or any other thingino
     return static_file(file, root='./static/')
 
 @route('/404')
@@ -39,7 +43,7 @@ def error_method():
 
 # Rutas dinamicas del server
 
-@route('/:module/:action')
+@route('/<module>/<action>')
 def run_action(module,action):
     try:
         m = import_module(module)
@@ -53,7 +57,16 @@ def run_action(module,action):
         print "ERROR: module %s doesn't have a %s function" % (module, action_call)
         print "ERROR: %s" % e
         redirect('/400')
-    return a()
+    #TODO: añadir autenticacion
+    metodo = request.method
+    get_p = request.query
+    post_p = request.forms
+    # por simplificar, pasamos siempre 3 parametros:
+    #   - metodo: GET,POST,PUT,DELETE
+    #   - get_p: parametros de la query (?cosa=otracosa)
+    #   - post_p: parametros de post-data
+    # por lo que cada funcion debera comprobar que tiene todo
+    return a(metodo, get_p, post_p)
 
 
 if __name__ == '__main__':
