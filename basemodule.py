@@ -27,6 +27,29 @@ class BaseDocument(object):
             raise AttributeError("%r object has no attribute %r" %
                                  (type(self)._name, name))
 
+    def save(self,db,fields=[]):
+        """
+        Almacena en base de datos
+        Arguments:
+        - `db`: mongodb donde guardar los datos
+        - `fields`: si tiene valor, solo se actualizan las claves indicadas
+        """
+        keys = self._document.keys()
+        datos = dict()
+        if len(fields)>0:
+            field_list = fields
+        else:
+            field_list = keys
+        for f in field_list:
+            if f in keys:
+                datos[f] = self._document[f]
+        col = getattr(db,self.__module__)  # funcionara al heredar la clase?
+        if len(fields>0):
+            col.update({'_id':self._document._id},{'$set':datos})
+        else:
+            col.update({'_id':self._document._id},datos)
+
+
     def show(self, showonly=None):
         """
         Muestra el objeto completo si no se le pasan parametros
