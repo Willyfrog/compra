@@ -1,4 +1,6 @@
-class Document(object):
+# -*- coding: utf-8 -*-p
+
+class BaseDocument(object):
     """
     Establece las funciones basicas para la abstraccion del documento
     de mongodb y el json usado para la api
@@ -25,7 +27,7 @@ class Document(object):
             raise AttributeError("%r object has no attribute %r" %
                                  (type(self)._name, name))
 
-    def show(showonly=None):
+    def show(self, showonly=None):
         """
         Muestra el objeto completo si no se le pasan parametros
         o solo los seleccionados si showonly es dtto de None
@@ -39,9 +41,14 @@ class Document(object):
                 if showonly is None or getattr(showonly,key,False):
                     res[key] = self._document[key]
         if showonly is None or getattr(showonly,'_methods',False):
-            res['_methods'] = dict()
+            res['_methods'] = self.show_methods()
 
-
+    def show_methods(self):
+        """
+        Completar en cada objeto con las llamadas apropiadas
+        de manera que cada objeto ofrezca la navegacion a interactuar con el
+        """
+        raise NotImplementedError("Someone forgot to implement me, at least with an empty value")
 
     def __unicode__():
         """
