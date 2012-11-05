@@ -14,7 +14,9 @@ class Listas(object):
             """
             """
 
-class Lista(Document):
+class Lista(BaseDocument):
     """
     Abstracion entre el documento de mongo y el json de la web
     """
+    def show_methods(self):
+        return dict('delete': 'DELETE /%s/%s/%s' % (self.__module__,))
