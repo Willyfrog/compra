@@ -3,7 +3,8 @@ from bottle import route, run, debug, request, abort, redirect,static_file
 import pymongo
 from json import loads, dumps
 from importlib import import_module
-from config import log, DEBUG, RELOAD_SERVER
+from utils import log
+from config import DEBUG, RELOAD_SERVER
 # Rutas estaticas del server
 
 @route('/')
@@ -108,7 +109,7 @@ def run_default_action_on_item(module,item):
         action_call = module + '_show'
     elif request.method == "DELETE":
         action_call = module + "_del"
-    elif request.method == "PUT":
+    elif request.method == "PATCH":  # Patch es parcial, mientras que put es completo
         action_call = module + "_modify"
     else:
         redirect('/400')

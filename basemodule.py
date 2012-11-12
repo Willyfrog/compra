@@ -64,17 +64,23 @@ class BaseDocument(object):
                 if showonly is None or getattr(showonly,key,False):
                     res[key] = self._document[key]
         if showonly is None or getattr(showonly,'_methods',False):
-            res['_methods'] = self.show_methods()
+            res['_methods'] = self.hateoas()
 
-    def show_methods(self):
+    def hateoas(self):
         """
-        Completar en cada objeto con las llamadas apropiadas
-        de manera que cada objeto ofrezca la navegacion a interactuar con el
+        Hypertext as the engine of application state
+        das los enlaces para facilitar la navegacion (padre, hijos, el propio elemento, lo que haga falta donde se apliquen los metodos de http)
         """
-        raise NotImplementedError("Someone forgot to implement me, at least with an empty value")
+        raise NotImplementedError("Someone forgot to implement me, I don't even have an empty value")
 
-    def __unicode__():
+    def __unicode__(self):
         """
         Crea la representacion del objeto de cara a mostrarlo
         """
         self.show()
+
+    def __str__(self):
+        '''
+        Recupera de unicode la representacion
+        '''
+        return unicode(self).encode('utf-8')
